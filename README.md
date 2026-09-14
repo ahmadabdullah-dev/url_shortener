@@ -3,61 +3,61 @@
 ## API Features
 
 ### Auth
-- `LoginAsync(LoginDto dto)`: Authenticates the user via ASP.NET Identity, using `SignInManager` to sign in with a cookie.
-- `LogoutAsync()`: Signs the user out via ASP.NET Identity's `SignOutManager`.
-- `RegisterAsync(RegisterDto)`: Register a user, add to role, and send email confirmation link
-- `ConfirmEmailAsync(string code)`: Confirms the user email by the code that sent initially after creating account or after resending email confirmation code.
-- `ResendEmailConfirmationCodeAsync()`: resend email confirmation code again.
-- `ForgetPasswordAsync(string email)`: sends a resetPassword code to email.
-- `ResetPasswordAsync(ResetPasswordDto dto)`: Validates resetPassword Code. Then Update the current password.
+- `LoginAsync(LoginDto dto)`
+- `LogoutAsync()`
+- `RegisterAsync(RegisterDto)`
+- `ConfirmEmailAsync(string code)`
+- `ResendEmailConfirmationCodeAsync()`
+- `ForgetPasswordAsync(string email)`
+- `ResetPasswordAsync(ResetPasswordDto dto)`
 
 ### Common
-- `Result<T> Pattern`: Wraps success/failure state with data or error details, avoiding exception-based flow.
-- `PagedList`: Used to retrieve data from the database efficiently, applying pagination based on `PaginationParams`.
+- `Result<T> Pattern`
+- `PagedList`
 
 ### Url 
-- `CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto)`: creates a code of 5 digit and add to db.
-- `GetUrlByUrlShortCodeAsync(string shortCode)`: Retrives a UrlDto after finding Url by shortCode
-- `GeCurrentUserUrls(PaginationParams)`: Retrieves current user urls with in pagedList
-- `RedirectFromRouteAsync(string shortCode)`: returns long url and add click count to url.
+- `CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto)`
+- `GetUrlByUrlShortCodeAsync(string shortCode)`
+- `GeCurrentUserUrls(PaginationParams)`
+- `RedirectFromRouteAsync(string shortCode)`
 
 ### User 
-- `GetCurrentUserAsync()`: Retrieves the current user by getting the user ID from `IHttpContextAccessor`.
+- `GetCurrentUserAsync()`
 
 ### Data
-- `DataSeeder`: Seeds fake data for initial entities
+- `DataSeeder`
 
 ### Click
-- `AddClickAsync(string urlId)`: Add +1 click to url
-- `GetClicksCountAsync(string urlId)`: Returns the clicks count of an url
+- `AddClickAsync(string urlId)`
+- `GetClicksCountAsync(string urlId)`
 ---
 ## Web Features
 
 ### Auth
-- `RequireAuth()`: Guards authorized routes, preventing unauthenticated users from accessing them.
-- `LoginForm()`: Takes email, password, and isPersistence, it sends them to the backend for validation. Navigates to the dashboard on success.
-- `LogoutButton()`: Deletes the auth cookie from storage and navigates to the login page.
-- `RequireConfirmedEmail()`: Used as a wrapper for routes that required user to have confirmed email
-- `ConfirmEmailForm()`: Includes confirm email by code and resendEmailConfirmationCode button.
--  `ForgetPasswordForm()`: Takes email from the user and navigate to resetPassword.
--  `ResetPasswordForm()`: After successfully validation from ForgetPassword takes email parameter from it. Takes also verification code and new password.
-  
+- `RequireAuth()`
+- `LoginForm()`
+- `LogoutButton()`
+- `RequireConfirmedEmail()`
+- `ConfirmEmailForm()`
+- `ForgetPasswordForm()`
+- `ResetPasswordForm()`
+
 ### App
-- `Header`: Uses a ready-made MUI template. Contains the navigation bar. Valid on large screens.
-- `TemporaryDrawer`: Uses a ready-made MUI template. Inherits navigation items from `Header`. Valid on small screens.
-- `Footer`: Always stays at the bottom of the page. Contains copyright info.
-- `Dashboard`: The initial page shown after a user successfully logs in.
-- `Router`: Provides the routes of the project with `react-router` libary
+- `Header`
+- `TemporaryDrawer`
+- `Footer`
+- `Dashboard`
+- `Router`
+
 ### Url
-- `CreateUrlShortCodeForm()`: Creating a url short code component.
-- `ReadUrlByShortCodeForm()`: Provides a search button and text field. If success shows the Url Information.
-- `RedirectToOriginalUrl()`: Takes a short code parameter from the route then redirect to original url
-- `CurrentUserUrls()`: Shows the current user urls in pagedList
+- `CreateUrlShortCodeForm()`
+- `ReadUrlByShortCodeForm()`
+- `RedirectToOriginalUrl()`
+- `CurrentUserUrls()`
 
 ### Error
-- `NotFound`: Shown when the user enters an invalid URL, handled via React Router.
-- `ErrorPage`: Shown in case of any error scenario, handled via React Router.
-
+- `NotFound`
+- `ErrorPage`
 ---
 ## Run Database Migrations
 
