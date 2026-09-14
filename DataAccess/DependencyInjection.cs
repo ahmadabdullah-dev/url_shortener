@@ -4,11 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace DataAccess
+namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddDataAccess(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
@@ -35,7 +35,8 @@ namespace DataAccess
 
             services.AddScoped<IUrlRepository,UrlRepository>();
             services.AddScoped<IClickRepository,ClickRepository>();
-        
+            services.AddScoped<DataSeeder>();
+
             services.AddDataProtection();
 
             return services;

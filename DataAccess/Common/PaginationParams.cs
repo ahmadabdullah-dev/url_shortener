@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Common;
+﻿namespace Infrastructure.Common;
 
 public class PaginationParams
 {

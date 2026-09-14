@@ -1,4 +1,4 @@
-﻿namespace Business.Common.Configurations;
+﻿namespace Application.Common.Configurations;
 
 public sealed class EmailConfiguration
 {

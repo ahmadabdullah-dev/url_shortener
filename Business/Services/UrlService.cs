@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Business.Services;
+namespace Application.Services;
 public class UrlService : IUrlService
 {
     private readonly IUrlRepository _urlRepository;
@@ -77,7 +77,7 @@ public class UrlService : IUrlService
         if (entity == null)
             return Result<UrlDto>.Failure("Url not found", 404);
 
-        int clicksCount = await _clickService.GetClicksCountAsync(entity.UrlId);
+        int clicksCount = await _clickService.GetClicksCountAsync(entity.Id);
 
         var dto = new UrlDto
         {

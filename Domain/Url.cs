@@ -1,12 +1,10 @@
-﻿namespace DataAccess.Entities;
+﻿namespace Domain;
 
-public class Url
+public class Url : BaseEntity
 {
-    public string UrlId { get; set; } = Guid.NewGuid().ToString();
     public string ShortCode { get; set; } = null!;
     public string LongUrl { get; set; } = null!;
     public string UserId { get; set; } = null!;
-    public DateTime CreatedAt { get; set; }
     public DateTime ExpiresAt { get; set; }
     public bool IsActive { get; set; }
 

@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Common;
+﻿namespace Infrastructure.Common;
 
 using Microsoft.EntityFrameworkCore;
 public class PagedList<T>

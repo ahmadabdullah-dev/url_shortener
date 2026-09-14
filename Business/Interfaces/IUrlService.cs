@@ -1,4 +1,4 @@
-﻿namespace Business.Interfaces;
+﻿namespace Application.Interfaces;
 
 public interface IUrlService
 {

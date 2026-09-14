@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 
-namespace Business.Services;
+namespace Application.Services;
 
 public static class ServiceHelper
 {

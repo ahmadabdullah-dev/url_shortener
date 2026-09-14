@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
-namespace Business.Services;
+namespace Application.Services;
 public class UserService : IUserService
 {
     private readonly UserManager<AppUser> _userManager;

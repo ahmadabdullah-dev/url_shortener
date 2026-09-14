@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Projections;
+﻿namespace Infrastructure.Projections;
 public class UrlProjection
 {
     public string UrlId { get; set; } = null!;

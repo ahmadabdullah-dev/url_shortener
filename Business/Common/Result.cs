@@ -1,4 +1,4 @@
-namespace Business.Common;
+namespace Application.Common;
 
 public class Result<T>
 {

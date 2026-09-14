@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess;
+namespace Infrastructure;
 
 public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<AppUser, IdentityRole,string>(options)
 {

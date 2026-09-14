@@ -1,5 +1,5 @@
-﻿global using DataAccess.Entities;
-global using DataAccess.Interfaces;
-global using DataAccess.Repositories;
-global using DataAccess.Common;
-global using DataAccess.Projections;
+﻿global using Domain;
+global using Infrastructure.Interfaces;
+global using Infrastructure.Repositories;
+global using Infrastructure.Common;
+global using Infrastructure.Projections;

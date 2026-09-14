@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Interfaces;
+﻿namespace Infrastructure.Interfaces;
 public interface IClickRepository
 {
     Task AddAsync(Click click);

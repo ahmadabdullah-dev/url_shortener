@@ -1,15 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Business;
+namespace Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddBusiness(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<DataSeeder>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUrlService, UrlService>();
         services.AddScoped<IClickService, ClickService>();

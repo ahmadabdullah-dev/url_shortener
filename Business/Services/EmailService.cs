@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
+
+namespace Application.Services;
 public class EmailService : IEmailService
 {
     private readonly EmailConfiguration _emailConfig;

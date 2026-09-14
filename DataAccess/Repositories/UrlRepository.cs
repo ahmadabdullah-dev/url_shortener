@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Repositories;
+namespace Infrastructure.Repositories;
 
 public class UrlRepository : IUrlRepository
 {
@@ -13,7 +13,7 @@ public class UrlRepository : IUrlRepository
     {
         _dbContext.Urls.Add(url);
         await _dbContext.SaveChangesAsync();
-        return url.UrlId;
+        return url.Id;
     }
     public async Task<bool> IsUrlShortCodeExistsAsync(string shortCode)
     {
@@ -31,7 +31,7 @@ public class UrlRepository : IUrlRepository
             .Where(x => x.UserId == userId)
             .Select(x => new UrlProjection
             {
-                UrlId = x.UrlId,
+                UrlId = x.Id,
                 ShortCode = x.ShortCode,
                 LongUrl = x.LongUrl,
                 IsActive = x.IsActive,
@@ -47,9 +47,9 @@ public class UrlRepository : IUrlRepository
     {
         var result = await _dbContext.Urls
             .Where(x => x.ShortCode == shortCode)
-            .Select(x => new { x.UrlId, x.LongUrl })
+            .Select(x => new { x.Id, x.LongUrl })
             .SingleOrDefaultAsync();
 
-        return result == null ? null : (result.UrlId, result.LongUrl);
+        return result == null ? null : (result.Id, result.LongUrl);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Repositories;
+namespace Infrastructure.Repositories;
 
 public class ClickRepository : IClickRepository
 {

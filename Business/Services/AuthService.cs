@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace Business.Services;
+namespace   Application.Services;
 
 public class AuthService : IAuthService
 {

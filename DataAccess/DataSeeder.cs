@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess;
+namespace Infrastructure;
 
 public class DataSeeder
 {
