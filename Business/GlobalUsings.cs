@@ -1,9 +1,0 @@
-﻿global using Application.Dtos;
-global using Application.Common;
-global using Application.Interfaces;
-global using Application.Common.Configurations;
-global using Domain;
-global using Application.Services;
-global using Infrastructure.Common;
-global using Infrastructure.Interfaces;
-global using Infrastructure;
