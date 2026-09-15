@@ -24,23 +24,23 @@ public class UrlRepository : IUrlRepository
     {
         return await _dbContext.Urls.SingleOrDefaultAsync(u => u.ShortCode == shortCode);
     }
-    public async Task<PagedList<UrlProjection>> GetUrlsByUserIdAsync(PaginationParams p, string userId)
+    public async Task<PagedList<Url>> GetUrlsByUserIdAsync(PaginationParams p, string userId)
     {
         var query = _dbContext.Urls
             .AsNoTracking()
             .Where(x => x.UserId == userId)
-            .Select(x => new UrlProjection
+            .Select(x => new Url
             {
-                UrlId = x.Id,
+                Id = x.Id,
                 ShortCode = x.ShortCode,
                 LongUrl = x.LongUrl,
                 IsActive = x.IsActive,
                 CreatedAt = x.CreatedAt,
                 ExpiresAt = x.ExpiresAt,
-                ClickCount = x.Cliks.Count()
+                Cliks = x.Cliks
             });
 
-        return await PagedList<UrlProjection>.CreateAsync(query, p.Page, p.PageSize);
+        return await PagedList<Url>.CreateAsync(query, p.Page, p.PageSize);
     }
 
     public async Task<(string UrlId, string LongUrl)?> GetUrlIdAndLongUrlByShortCodeAsync(string shortCode)

@@ -108,7 +108,7 @@ public class UrlService : IUrlService
                 IsActive = x.IsActive,
                 CreatedAt = x.CreatedAt,
                 ExpiresAt = x.ExpiresAt,
-                ClickCount = x.ClickCount
+                ClickCount = x.Cliks.Count()
 
             }).ToList(),
 
