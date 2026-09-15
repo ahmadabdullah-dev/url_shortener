@@ -67,14 +67,14 @@ Run these commands from the **solution root**.
 
 ```powershell
 dotnet ef migrations add Mig_1 `
-  --project .\DataAccess\DataAccess.csproj `
-  --startup-project .\API\API.csproj
+--project .\Infrastructure\Infrastructure.csproj `
+--startup-project .\API\API.csproj
 ```
 
 **Apply migrations:**
 
 ```powershell
-dotnet ef database update `
-  --project .\DataAccess\DataAccess.csproj `
-  --startup-project .\API\API.csproj
+dotnet ef database update
+ --project .\Infrastructure\Infrastructure.csproj
+ --startup-project .\API\API.csproj
 ```
