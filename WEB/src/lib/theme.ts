@@ -6,7 +6,7 @@ export const theme = () =>
       mode: "dark",
       background: {
         default: "#000000",
-        paper: "#0a0a0a",
+        paper: "#0d0d0d",
       },
       primary: {
         main: "#ffffff",
@@ -17,9 +17,9 @@ export const theme = () =>
       },
       text: {
         primary: "#ffffff",
-        secondary: "#8a8a8a",
+        secondary: "#777777",
       },
-      divider: "rgba(255,255,255,0.12)",
+      divider: "rgba(255,255,255,0.10)",
       error: { main: "#ff3b30" },
       success: { main: "#00d26a" },
     },
@@ -47,8 +47,16 @@ export const theme = () =>
       },
       MuiCard: {
         styleOverrides: {
-          root: { border: "1px solid rgba(255,255,255,0.12)", borderRadius: 0 },
+          root: { border: "1px solid rgba(255,255,255,0.10)", borderRadius: 0 },
         },
+      },
+      MuiChip: {
+        styleOverrides: {
+          root: { borderRadius: 999 },
+        },
+      },
+      MuiTextField: {
+        defaultProps: { variant: "outlined" },
       },
     },
   });

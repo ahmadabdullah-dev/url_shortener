@@ -12,7 +12,7 @@ export default function Footer() {
     >
       <Divider sx={{ borderWidth:2, borderColor: "primary.main"}} />
       <Typography variant="body1" color="text.secondary" sx={{mt:2}}>
-        © {new Date().getFullYear()} Url Shortner. All rights reserved.
+        © {new Date().getFullYear()} Url Shortener. All rights reserved.
       </Typography>
     </Box>
   );

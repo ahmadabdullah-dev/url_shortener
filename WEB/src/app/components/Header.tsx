@@ -6,13 +6,14 @@ import {
   Stack,
   Link as MuiLink,
 } from "@mui/material";
+import LinkIcon from "@mui/icons-material/Link";
 import { Link as RouterLink } from "react-router";
 import TemporaryDrawer from "./TemporaryDrawer";
 import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "My Profile", href: "/my-profile"}
+  { label: "My Profile", href: "/my-profile" },
 ];
 
 export default function Header() {
@@ -48,21 +49,30 @@ export default function Header() {
           alignItems: "center",
         }}
       >
-        <Typography
+        <Stack
           component={RouterLink}
           to="/"
-          sx={{
-            color: "text.primary",
-            fontWeight: 700,
-            fontSize: { xs: 16, md: 18 },
-            letterSpacing: "0.22em",
-            textDecoration: "none",
-            userSelect: "none",
-          }}
+          direction="row"          
+          spacing={0.75}
+          sx={{ textDecoration: "none", userSelect: "none", alignItems:"center" }}
         >
-          Url Shortener
-        </Typography>
+          <LinkIcon
+            sx={{ fontSize: 18, color: "primary.main", transform: "rotate(-45deg)" }}
+          />
+          <Typography
+            sx={{
+              color: "text.primary",
+              fontWeight: 700,
+              fontSize: { xs: 14, md: 16 },
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+            }}
+          >
+            Url Shortener
+          </Typography>
+        </Stack>
 
+        {/* Desktop nav */}
         <Stack
           direction="row"
           spacing={4}

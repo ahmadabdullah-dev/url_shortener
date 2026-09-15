@@ -12,11 +12,14 @@ import {
   IconButton,
   Button,
   Stack,
+  Grid,
+  Divider,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { useRegisterUser } from "../../lib/hooks/useAuth";
 import { useNavigate } from "react-router";
+
 export default function RegisterForm() {
   const registerUser = useRegisterUser();
   const {
@@ -27,6 +30,7 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm<RegisterDto>();
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = (creds: RegisterDto) => {
     registerUser.mutateAsync(creds, {
@@ -38,39 +42,59 @@ export default function RegisterForm() {
       },
     });
   };
-  const navigate = useNavigate();
+
   return (
     <Container maxWidth="sm">
-      <Box>
-        <Paper sx={{ p: 4, width: "100%" }}>
-          <Typography
-            variant="h3"
-            sx={{
-              m: 2,
-              textAlign: "center",
-            }}
-          >
-            Register
-          </Typography>
+      <Box
+        sx={{
+          minHeight: "100dvh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          py: 4,
+        }}
+      >
+        <Paper
+          sx={{
+            p: { xs: 3, sm: 5 },
+            width: "100%",
+            border: "1px solid",
+            borderColor: "divider",
+          }}
+        >
+          <Stack   spacing={1} sx={{ mb: 4, alignItems:"center" }}>
+          
+            <Typography variant="h5" sx={{ fontWeight: 700, mt: 1 }}>
+              Register
+            </Typography>
+            
+          </Stack>
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={2}>
-              <TextField
-                label="FirstName"
-                fullWidth
-                {...register("FirstName", {
-                  required: "FirstName is required",
-                })}
-                error={!!errors.FirstName}
-                helperText={errors.FirstName?.message}
-              />
-              <TextField
-                label="LastName"
-                fullWidth
-                {...register("LastName", { required: "LastName is required" })}
-                error={!!errors.LastName}
-                helperText={errors.LastName?.message}
-              />
+            <Stack spacing={2.5}>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    label="First Name"
+                    fullWidth
+                    {...register("FirstName", {
+                      required: "First name is required",
+                    })}
+                    error={!!errors.FirstName}
+                    helperText={errors.FirstName?.message}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, sm: 6 }}>
+                  <TextField
+                    label="Last Name"
+                    fullWidth
+                    {...register("LastName", { required: "Last name is required" })}
+                    error={!!errors.LastName}
+                    helperText={errors.LastName?.message}
+                  />
+                </Grid>
+              </Grid>
+
               <TextField
                 label="Email"
                 type="email"
@@ -100,6 +124,7 @@ export default function RegisterForm() {
                         <IconButton
                           onClick={() => setShowPassword(!showPassword)}
                           edge="end"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
                         >
                           {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
@@ -108,30 +133,44 @@ export default function RegisterForm() {
                   },
                 }}
               />
+
               <Button
                 type="submit"
                 variant="contained"
                 fullWidth
+                size="large"
                 disabled={registerUser.isPending}
               >
                 {registerUser.isPending ? (
-                  <CircularProgress size={24} color="inherit" />
+                  <CircularProgress size={22} color="inherit" />
                 ) : (
                   "Register"
                 )}
               </Button>
+
               {registerUser.isSuccess && (
-                <Alert severity="success">{registerUser.data.data}</Alert>
+                <Alert severity="success" variant="outlined">
+                  {registerUser.data.data}
+                </Alert>
               )}
               {registerUser.error && (
-                <Alert severity="error">{registerUser.error.message}</Alert>
+                <Alert severity="error" variant="outlined">
+                  {registerUser.error.message}
+                </Alert>
               )}
+
+              <Divider>
+                <Typography variant="caption" color="text.secondary">
+                  OR
+                </Typography>
+              </Divider>
+
               <Button
-                variant="text"
-                sx={{ border: 2, m: 1, width: "100%" }}
+                variant="outlined"
+                fullWidth
                 onClick={() => navigate("/login")}
               >
-                Already registered
+                Already have an account? Sign In
               </Button>
             </Stack>
           </Box>
