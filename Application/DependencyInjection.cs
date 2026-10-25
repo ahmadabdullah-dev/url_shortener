@@ -12,9 +12,12 @@ public static class DependencyInjection
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUrlService, UrlService>();
         services.AddScoped<IClickService, ClickService>();
+        services.AddScoped<IFileService, FileService>();
 
         services.Configure<EmailConfiguration>(configuration.GetSection("EmailConfiguration"));
+        services.Configure<CloudinaryConfigurations>(configuration.GetSection("CloudinaryConfigurations"));
 
         return services;
     }
 }
+ 
