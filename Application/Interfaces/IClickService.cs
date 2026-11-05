@@ -1,6 +1,6 @@
 ﻿namespace Application.Interfaces;
 public interface IClickService
 {
-    Task AddClickAsync(string urlId);
-    Task<int> GetClicksCountAsync(string urlId);
+    Task AddClickAsync(string urlId, CancellationToken ct);
+    Task<int> GetClicksCountAsync(string urlId, CancellationToken ct);
 }

@@ -2,31 +2,21 @@
 
 namespace Infrastructure.Repositories;
 
-public class UrlRepository : IUrlRepository
+public class UrlRepository : Repository<Url>, IUrlRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-    public UrlRepository(ApplicationDbContext dbContext)
+    public UrlRepository(ApplicationDbContext dbContext) : base(dbContext) {}
+    public async Task<bool> IsUrlShortCodeExistsAsync(string shortCode, CancellationToken ct)
     {
-        _dbContext = dbContext;
+        return await Db.Urls.AnyAsync
+            (u => u.ShortCode == shortCode, ct);
     }
-    public async Task<string> AddAsync(Url url)
+    public async Task<Url?> GetUrlByUrlShortCodeAsync(string shortCode, CancellationToken ct)
     {
-        _dbContext.Urls.Add(url);
-        await _dbContext.SaveChangesAsync();
-        return url.Id;
+        return await Db.Urls.SingleOrDefaultAsync(u => u.ShortCode == shortCode, ct);
     }
-    public async Task<bool> IsUrlShortCodeExistsAsync(string shortCode)
+    public async Task<PagedList<Url>> GetUrlsByUserIdAsync(PaginationParams p, string userId, CancellationToken ct)
     {
-        return await _dbContext.Urls.AnyAsync
-            (u => u.ShortCode == shortCode);
-    }
-    public async Task<Url?> GetUrlByUrlShortCodeAsync(string shortCode)
-    {
-        return await _dbContext.Urls.SingleOrDefaultAsync(u => u.ShortCode == shortCode);
-    }
-    public async Task<PagedList<Url>> GetUrlsByUserIdAsync(PaginationParams p, string userId)
-    {
-        var query = _dbContext.Urls
+        var query = Db.Urls
             .AsNoTracking()
             .Where(x => x.UserId == userId)
             .Select(x => new Url
@@ -43,12 +33,12 @@ public class UrlRepository : IUrlRepository
         return await PagedList<Url>.CreateAsync(query, p.Page, p.PageSize);
     }
 
-    public async Task<(string UrlId, string LongUrl)?> GetUrlIdAndLongUrlByShortCodeAsync(string shortCode)
+    public async Task<(string UrlId, string LongUrl)?> GetUrlIdAndLongUrlByShortCodeAsync(string shortCode, CancellationToken ct)
     {
-        var result = await _dbContext.Urls
+        var result = await Db.Urls
             .Where(x => x.ShortCode == shortCode)
             .Select(x => new { x.Id, x.LongUrl })
-            .SingleOrDefaultAsync();
+            .SingleOrDefaultAsync(ct);
 
         return result == null ? null : (result.Id, result.LongUrl);
     }

@@ -2,20 +2,12 @@
 
 namespace Infrastructure.Repositories;
 
-public class ClickRepository : IClickRepository
+public class ClickRepository : Repository<Click>, IClickRepository
 {
-    private readonly ApplicationDbContext _dbContext;
-    public ClickRepository(ApplicationDbContext dbContext)
+    public ClickRepository(ApplicationDbContext dbContext) : base(dbContext) {}
+
+    public async Task<int> GetClicksCountAsync(string urlId, CancellationToken ct)
     {
-        _dbContext = dbContext;
-    }
-    public async Task AddAsync(Click click)
-    {
-        await _dbContext.Clicks.AddAsync(click);
-        await _dbContext.SaveChangesAsync();
-    }
-    public async Task<int> GetClicksCountAsync(string urlId)
-    {
-       return await _dbContext.Clicks.Where(x => x.UrlId == urlId ).CountAsync();
+       return await Db.Clicks.Where(x => x.UrlId == urlId ).CountAsync(ct);
     }
 }

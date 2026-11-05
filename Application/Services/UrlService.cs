@@ -19,34 +19,32 @@ public class UrlService : IUrlService
         _clickService = clickService;
         _logger = logger;
     }
-    public async Task<Result<string>> CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto)
+    public async Task<Result<string>> CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto, CancellationToken ct)
     {
-        var currentUser = await _userService.GetCurrentUserAsync();
-      
+        var currentUser = await _userService.GetCurrentUserAsync(ct);
+
         if (currentUser.Value == null)
-            return Result<string>.Failure("Unauthorized",401);
+            return Result<string>.Failure("Unauthorized", 401);
 
         if (!currentUser.Value.IsEmailConfirmed)
-            return Result<string>.Failure("Please confirm your email", 401);
+            return Result<string>.Failure("Please confirm your email", 403);
 
         if (!ServiceHelper.IsUrl(dto.LongUrl))
-            return Result<string>.Failure("Invalid URL", 409);
+            return Result<string>.Failure("Invalid URL", 400);
 
         string shortCode;
 
         if (!string.IsNullOrEmpty(dto.CustomShortCode))
         {
-            if (await _urlRepository.IsUrlShortCodeExistsAsync(dto.CustomShortCode))
-                return Result<string>.Failure($"'{dto.CustomShortCode}': Short code already exists", 400);
+            if (await _urlRepository.IsUrlShortCodeExistsAsync(dto.CustomShortCode, ct))
+                return Result<string>.Failure($"'{dto.CustomShortCode}': Short code already exists", 409);
 
             shortCode = dto.CustomShortCode;
         }
         else
         {
-            shortCode = await GenerateUniqueUrlShortCodeAsync();
+            shortCode = await GenerateUniqueUrlShortCodeAsync(ct);
         }
-
-        var expiresAt = dto.ExpiresAt ?? DateTime.UtcNow.AddDays(14);
 
         var url = new Url
         {
@@ -54,17 +52,25 @@ public class UrlService : IUrlService
             LongUrl = dto.LongUrl,
             UserId = currentUser.Value.Id,
             CreatedAt = DateTime.UtcNow,
-            ExpiresAt = expiresAt,
-            IsActive = true,
+            ExpiresAt = dto.ExpiresAt ?? DateTime.UtcNow.AddDays(14),
+            IsActive = true
         };
 
-        var createdUrlId = await _urlRepository.AddAsync(url);
+        try
+        {
+            await _urlRepository.AddAsync(url, ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to create short code for {LongUrl}", dto.LongUrl);
+            return Result<string>.Failure("An error occurred while creating the short code. Please try again later.", 500);
+        }
 
-        return Result<string>.Success($"Short code created successfully. Code is: '{shortCode}'");
+        return Result<string>.Success(shortCode);
     }
-    public async Task<Result<UrlDto>> GetUrlByUrlShortCodeAsync(string shortCode)
+    public async Task<Result<UrlDto>> GetUrlByUrlShortCodeAsync(string shortCode, CancellationToken ct)
     {
-        var currentUser = await _userService.GetCurrentUserAsync();
+        var currentUser = await _userService.GetCurrentUserAsync(ct);
         
         if (currentUser.Value == null)
             return Result<UrlDto>.Failure("Unauthorized", 401);
@@ -72,12 +78,12 @@ public class UrlService : IUrlService
         if (!currentUser.Value.IsEmailConfirmed)
             return Result<UrlDto>.Failure("Please confirm your email",401);
 
-        var entity = await _urlRepository.GetUrlByUrlShortCodeAsync(shortCode);
+        var entity = await _urlRepository.GetUrlByUrlShortCodeAsync(shortCode, ct);
 
         if (entity == null)
             return Result<UrlDto>.Failure("Url not found", 404);
 
-        int clicksCount = await _clickService.GetClicksCountAsync(entity.Id);
+        int clicksCount = await _clickService.GetClicksCountAsync(entity.Id, ct);
 
         var dto = new UrlDto
         {
@@ -90,14 +96,14 @@ public class UrlService : IUrlService
         
         return Result<UrlDto>.Success(dto);
     }
-    public async Task<Result<PagedList<UrlDto>>> GetCurrentUserUrlsAsync(PaginationParams p)
+    public async Task<Result<PagedList<UrlDto>>> GetCurrentUserUrlsAsync(PaginationParams p, CancellationToken ct)
     {
         var userId = _userService.GetCurrentUserId();
         
         if (userId == null)
             return Result<PagedList<UrlDto>>.Failure("Unauthorized", 401);
 
-        var urls = await _urlRepository.GetUrlsByUserIdAsync(p, userId);
+        var urls = await _urlRepository.GetUrlsByUserIdAsync(p, userId, ct);
         
         var dtos = new PagedList<UrlDto>
         {
@@ -119,9 +125,9 @@ public class UrlService : IUrlService
         };
        return Result<PagedList<UrlDto>>.Success(dtos);   
     }
-    public async Task<Result<string>> RedirectFromRouteAsync(string shortCode)
+    public async Task<Result<string>> RedirectFromRouteAsync(string shortCode, CancellationToken ct)
     {
-        var result = await _urlRepository.GetUrlIdAndLongUrlByShortCodeAsync(shortCode);
+        var result = await _urlRepository.GetUrlIdAndLongUrlByShortCodeAsync(shortCode, ct);
 
         if (result == null)
             return Result<string>.Failure("Url not found", 404);
@@ -130,7 +136,7 @@ public class UrlService : IUrlService
 
         try
         {
-            await _clickService.AddClickAsync(urlId); 
+            await _clickService.AddClickAsync(urlId, ct);
         }
         catch (Exception ex)
         {
@@ -139,13 +145,13 @@ public class UrlService : IUrlService
 
         return Result<string>.Success(longUrl);
     }
-    private async Task<string> GenerateUniqueUrlShortCodeAsync()
+    private async Task<string> GenerateUniqueUrlShortCodeAsync(CancellationToken ct)
     {
         for (int attempted = 0; attempted < 5; attempted++)
         {
             var code = ServiceHelper.GenerateShortCode(5);
 
-            if (!await _urlRepository.IsUrlShortCodeExistsAsync(code))
+            if (!await _urlRepository.IsUrlShortCodeExistsAsync(code, ct))
                 return code;
 
         }

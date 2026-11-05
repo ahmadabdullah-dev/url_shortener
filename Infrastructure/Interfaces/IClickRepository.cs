@@ -1,6 +1,5 @@
 ﻿namespace Infrastructure.Interfaces;
-public interface IClickRepository
+public interface IClickRepository : IRepository<Click>
 {
-    Task AddAsync(Click click);
-    Task<int> GetClicksCountAsync(string urlId);
+    Task<int> GetClicksCountAsync(string urlId, CancellationToken ct);
 }

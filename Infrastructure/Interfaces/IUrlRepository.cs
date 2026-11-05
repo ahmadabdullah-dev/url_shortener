@@ -1,10 +1,9 @@
 ﻿namespace Infrastructure.Interfaces;
 
-public interface IUrlRepository
+public interface IUrlRepository : IRepository<Url>  
 {
-    Task<string> AddAsync(Url url);
-    Task<bool> IsUrlShortCodeExistsAsync(string shortCode);
-    Task<Url?> GetUrlByUrlShortCodeAsync(string shortCode);
-    Task<PagedList<Url>> GetUrlsByUserIdAsync(PaginationParams p, string userId);
-    Task<(string UrlId, string LongUrl)?> GetUrlIdAndLongUrlByShortCodeAsync(string shortCode);
+    Task<bool> IsUrlShortCodeExistsAsync(string shortCode, CancellationToken ct);
+    Task<Url?> GetUrlByUrlShortCodeAsync(string shortCode, CancellationToken ct);
+    Task<PagedList<Url>> GetUrlsByUserIdAsync(PaginationParams p, string userId, CancellationToken ct);
+    Task<(string UrlId, string LongUrl)?> GetUrlIdAndLongUrlByShortCodeAsync(string shortCode, CancellationToken ct);
 }

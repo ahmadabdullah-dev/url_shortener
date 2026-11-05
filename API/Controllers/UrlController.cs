@@ -12,29 +12,29 @@ public class UrlController : BaseApiController
     }
     [Authorize]
     [HttpPost("create-url-short-code")]
-    public async Task<IActionResult> CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto)
+    public async Task<IActionResult> CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto, CancellationToken ct)
     {
-        var result = await _urlService.CreateUrlShortCodeAsync(dto);
+        var result = await _urlService.CreateUrlShortCodeAsync(dto, ct);
         return HandleResult(result);
     }
     [Authorize]
     [HttpGet("short-code")]
-    public async Task<IActionResult> GetUrlByUrlShortCode(string shortCode)
+    public async Task<IActionResult> GetUrlByUrlShortCode(string shortCode, CancellationToken ct)
     {
-        var result = await _urlService.GetUrlByUrlShortCodeAsync(shortCode);
+        var result = await _urlService.GetUrlByUrlShortCodeAsync(shortCode, ct);
         return HandleResult(result);
     }
     [Authorize]
     [HttpGet("current-user-urls")]
-    public async Task<IActionResult> GetCurrentUserUrls([FromQuery] PaginationParams p)
+    public async Task<IActionResult> GetCurrentUserUrls([FromQuery] PaginationParams p, CancellationToken ct)
     {
-        var result = await _urlService.GetCurrentUserUrlsAsync(p);
+        var result = await _urlService.GetCurrentUserUrlsAsync(p, ct);
         return HandleResult(result);
     }
     [HttpGet("redirect-by-short-code")]
-    public async Task<IActionResult> RedirectFromRouteAsync(string shortCode)
+    public async Task<IActionResult> RedirectFromRouteAsync(string shortCode, CancellationToken ct)
     { 
-        var result = await _urlService.RedirectFromRouteAsync(shortCode);
+        var result = await _urlService.RedirectFromRouteAsync(shortCode, ct);
         return HandleResult(result);
     }
 }

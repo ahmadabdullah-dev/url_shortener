@@ -31,7 +31,7 @@ public class UserService : IUserService
     {
         return _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.Role);
     }
-    public async Task<Result<UserDto>> GetCurrentUserAsync()
+    public async Task<Result<UserDto>> GetCurrentUserAsync(CancellationToken ct)
     {
         var userId = GetCurrentUserId();
         var role = GetCurrentUserRole();
@@ -55,5 +55,4 @@ public class UserService : IUserService
         };
         return Result<UserDto>.Success(dto);
     }
-
 }

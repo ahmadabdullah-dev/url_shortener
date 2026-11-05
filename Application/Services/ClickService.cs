@@ -7,7 +7,7 @@ public class ClickService : IClickService
     {
         _clickRepository = clickRepository;
     }
-    public async Task AddClickAsync(string urlId)
+    public async Task AddClickAsync(string urlId, CancellationToken ct)
     {
         var click = new Click
         {
@@ -15,10 +15,10 @@ public class ClickService : IClickService
             ClickedAt = DateTime.UtcNow,
         };
 
-        await _clickRepository.AddAsync(click);
+        await _clickRepository.AddAsync(click, ct);
     }
-    public async Task<int> GetClicksCountAsync(string urlId)
+    public async Task<int> GetClicksCountAsync(string urlId, CancellationToken ct)
     {
-      return await _clickRepository.GetClicksCountAsync(urlId);
+      return await _clickRepository.GetClicksCountAsync(urlId, ct);
     }
 }
