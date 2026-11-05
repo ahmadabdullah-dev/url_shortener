@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
+[ConfirmedEmail]
 public class UrlController : BaseApiController
 {
     private readonly IUrlService _urlService;
@@ -18,6 +19,7 @@ public class UrlController : BaseApiController
         return HandleResult(result);
     }
     [Authorize]
+    [SkipConfirmedEmail]
     [HttpGet("short-code")]
     public async Task<IActionResult> GetUrlByUrlShortCode(string shortCode, CancellationToken ct)
     {
@@ -31,6 +33,7 @@ public class UrlController : BaseApiController
         var result = await _urlService.GetCurrentUserUrlsAsync(p, ct);
         return HandleResult(result);
     }
+    [SkipConfirmedEmail]
     [HttpGet("redirect-by-short-code")]
     public async Task<IActionResult> RedirectFromRouteAsync(string shortCode, CancellationToken ct)
     { 
